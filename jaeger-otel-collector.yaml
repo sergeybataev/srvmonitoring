@@ -1,0 +1,48 @@
+exporters:
+  jaeger_cassandra:
+    servers: "scylladb"
+    index:
+      tags: false
+#    username: user
+#    password: pass
+    span_store_write_cache_ttl: 12s
+
+processors:
+  attributes:
+    actions:
+      - key: user
+        action: delete
+
+# service:
+#   pipelines:
+#     traces: 
+#       processors: [attributes]
+
+service:
+#  extensions: [pprof, zpages, health_check]
+  pipelines:
+    traces:
+#     receivers: [opencensus]
+      exporters: [jaeger_cassandra]
+      processors: [attributes]
+    # metrics:
+    #   receivers: [prometheus]
+    #   exporters: [prometheus]
+
+# Alternatively, use jaeger_thrift_http with the settings below. In this case
+# update the list of exporters on the traces pipeline.
+#
+#  jaeger_thrift_http:
+#    url: http://jaeger-all-in-one:14268/api/traces
+
+# processors:
+#   batch:
+#   queued_retry:
+
+# extensions:
+#   health_check:
+#   pprof:
+#     endpoint: :1888
+#   zpages:
+#     endpoint: :55679
+

@@ -1,0 +1,10 @@
+version: '3.7'
+
+
+networks:
+  front-tier:
+#    external: true
+  back-tier:
+    internal: true
+
+services:
